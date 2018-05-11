@@ -44,7 +44,7 @@
                 <swiper :options="swiperOption">
                     <swiper-slide v-for="(item,index) in recommenGoods" :key="index">
                         <div class="recommend-item">
-                            <img :src="item.image" alt="" >
+                            <img :src="item.image" alt="" width="80%">
                             <div>{{item.goodsName}}</div>
                             <div>￥{{item.price}}（￥{{item.mallPrice}}）</div>
                         </div>
@@ -52,11 +52,16 @@
                 </swiper>
             </div>
         </div>
+        <!-- 第一楼层 -->
+        <floor-component :floorData = "floor1"></floor-component>
     </div>
 </template>
 
 <script>
     import axios from 'axios'
+    import 'swiper/dist/css/swiper.css'
+    import {swiper,swiperSlide} from 'vue-awesome-swiper'
+    import floorComponent from '../component/floorComponent'
     export default {
         data() {
             return {
@@ -66,22 +71,24 @@
                 adBanner: '',        //广告图
                 recommenGoods: [],   //推荐商品
                 swiperOption: {
-                   
-                }
+                   slidesPerView: 3
+                },
+                floor1: [],
             }
         },
+        components: {swiper,swiperSlide,floorComponent},
         created() {
             axios({
                 url: 'https://www.easy-mock.com/mock/5aeaba62251a9a4ac1d1e26b/smileVue/index',
                 method: 'get'
             })
             .then(response => {
-                console.log(response)
                 if(response.status === 200) {
                     this.category = response.data.data.category;
                     this.adBanner = response.data.data.advertesPicture.PICTURE_ADDRESS;
                     this.bannerPicAarray = response.data.data.slides;
                     this.recommenGoods = response.data.data.recommend;
+                    this.floor1 = response.data.data.floor1;
                 }
             }).catch(error => {
                 console.log(error);            
@@ -149,4 +156,5 @@
             }
         }
     }
+    
 </style>
