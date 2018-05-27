@@ -2,8 +2,8 @@
     <div>
         <div class="floor">
             <div class="floor-title">
-                <div class="floor-number">1F</div>
-                <div class="floor-type">休闲食品</div>
+                <div class="floor-number">{{floorNumber}}</div>
+                <div class="floor-type">{{floorTitle}}</div>
             </div>
             <div class="floor-abnormal">
                 <div class="floor-one">
@@ -29,7 +29,7 @@
 
 <script>
     export default {
-        props: ['floorData'],
+        props: ['floorData','floorTitle','floorNumber'],
         data() {
             return {
                 floorData0: {},

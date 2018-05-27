@@ -46,14 +46,34 @@
                         <div class="recommend-item">
                             <img :src="item.image" alt="" width="80%">
                             <div>{{item.goodsName}}</div>
-                            <div>￥{{item.price}}（￥{{item.mallPrice}}）</div>
+                            <div>￥{{item.price | moneyFilter}}（￥{{item.mallPrice | moneyFilter}}）</div>
                         </div>
                     </swiper-slide>
                 </swiper>
             </div>
         </div>
         <!-- 第一楼层 -->
-        <floor-component :floorData = "floor1"></floor-component>
+        <floor-component :floorData = "floor1" :floorTitle="floorName.floor1" :floorNumber="floorNumber[0]"></floor-component>
+        <!-- 第二楼层 -->
+        <floor-component :floorData = "floor2" :floorTitle="floorName.floor2" :floorNumber="floorNumber[1]"></floor-component>
+        <!-- 第三楼层 -->
+        <floor-component :floorData = "floor3" :floorTitle="floorName.floor3" :floorNumber="floorNumber[2]"></floor-component>
+        <!-- Hot Area -->
+        <div class="hot-area">
+            <div class="hot-title">
+                <div class="floor-number">{{floorNumber[3]}}</div>
+                <div class="floor-type">热卖商品</div>
+            </div>
+            <div class="hot-goods">
+                <van-list>
+                    <van-row gutter="20">
+                        <van-col span="12" v-for="(item,index) in hotGoods" :key="index">
+                            <goodsInfo :goodsImage="item.image" :goodsName="item.name" :goodsPrice="item.price"></goodsInfo>
+                        </van-col>
+                    </van-row>
+                </van-list>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -62,6 +82,9 @@
     import 'swiper/dist/css/swiper.css'
     import {swiper,swiperSlide} from 'vue-awesome-swiper'
     import floorComponent from '../component/floorComponent'
+    import goodsInfo from '../component/goodsInfo'
+    import url from '@/serviceAPI.config.js'
+    import {toMoney} from '@/filter/moneyFilter.js'
     export default {
         data() {
             return {
@@ -74,12 +97,22 @@
                    slidesPerView: 3
                 },
                 floor1: [],
+                floor2: [],
+                floor3: [],
+                floorNumber: ['1F','2F','3F','4F'],
+                floorName: {},
+                hotGoods: [], //热卖商品
             }
         },
-        components: {swiper,swiperSlide,floorComponent},
+        filters: {
+            moneyFilter(money) {
+                return toMoney(money)
+            }
+        },
+        components: {swiper,swiperSlide,floorComponent,goodsInfo},
         created() {
             axios({
-                url: 'https://www.easy-mock.com/mock/5aeaba62251a9a4ac1d1e26b/smileVue/index',
+                url: url.getShoppingMallInfo,
                 method: 'get'
             })
             .then(response => {
@@ -89,6 +122,10 @@
                     this.bannerPicAarray = response.data.data.slides;
                     this.recommenGoods = response.data.data.recommend;
                     this.floor1 = response.data.data.floor1;
+                    this.floor2 = response.data.data.floor3;
+                    this.floor3 = response.data.data.floor2;
+                    this.floorName = response.data.data.floorName;
+                    this.hotGoods = response.data.data.hotGoods;
                 }
             }).catch(error => {
                 console.log(error);            
@@ -156,5 +193,21 @@
             }
         }
     }
-    
+    .hot-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: .5rem;
+        font-size: 14px;
+        color: #e5017d;
+        .floor-number {
+            width: 1.2rem;
+            height: 1.2rem;
+            text-align: center;     
+            background-color: #e5017d;
+            border-radius: 50%;
+            color: #ffffff;
+            margin-right: .8rem;
+        }
+    }
 </style>
