@@ -94,7 +94,10 @@
                 adBanner: '',        //广告图
                 recommenGoods: [],   //推荐商品
                 swiperOption: {
-                   slidesPerView: 3
+                   slidesPerView: 3,
+                   loop: true,
+                   freeMode: true, 
+                   mousewheel: true
                 },
                 floor1: [],
                 floor2: [],
@@ -116,17 +119,27 @@
                 method: 'get'
             })
             .then(response => {
-                if(response.status === 200) {
-                    this.category = response.data.data.category;
-                    this.adBanner = response.data.data.advertesPicture.PICTURE_ADDRESS;
-                    this.bannerPicAarray = response.data.data.slides;
-                    this.recommenGoods = response.data.data.recommend;
-                    this.floor1 = response.data.data.floor1;
-                    this.floor2 = response.data.data.floor3;
-                    this.floor3 = response.data.data.floor2;
-                    this.floorName = response.data.data.floorName;
-                    this.hotGoods = response.data.data.hotGoods;
-                }
+                // if(response.status === 200) {
+                //     console.log(JSON.stringify(response.data.data))
+                //     this.category = response.data.data.category;
+                //     this.adBanner = response.data.data.advertesPicture.PICTURE_ADDRESS;
+                //     this.bannerPicAarray = response.data.data.slides;
+                //     this.recommenGoods = response.data.data.recommend;
+                //     this.floor1 = response.data.data.floor1;
+                //     this.floor2 = response.data.data.floor2;
+                //     this.floor3 = response.data.data.floor3;
+                //     this.floorName = response.data.data.floorName;
+                //     this.hotGoods = response.data.data.hotGoods;
+                // } 
+                this.category = response.data.category;
+                this.adBanner = response.data.advertesPicture.PICTURE_ADDRESS;
+                this.bannerPicAarray = response.data.slides;
+                this.recommenGoods = response.data.recommend;
+                this.floor1 = response.data.floor1;
+                this.floor2 = response.data.floor2;
+                this.floor3 = response.data.floor3;
+                this.floorName = response.data.floorName;
+                this.hotGoods = response.data.hotGoods;
             }).catch(error => {
                 console.log(error);            
             })
@@ -203,6 +216,7 @@
         .floor-number {
             width: 1.2rem;
             height: 1.2rem;
+            line-height: 1.2rem;
             text-align: center;     
             background-color: #e5017d;
             border-radius: 50%;

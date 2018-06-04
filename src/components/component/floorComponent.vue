@@ -59,6 +59,7 @@
         .floor-number {
             width: 1.2rem;
             height: 1.2rem;
+            line-height: 1.2rem;
             text-align: center;     
             background-color: #e5017d;
             border-radius: 50%;
